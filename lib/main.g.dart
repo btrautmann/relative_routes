@@ -6,58 +6,55 @@ part of 'main.dart';
 // GoRouterGenerator
 // **************************************************************************
 
-List<RouteBase> get $appRoutes => [$root];
+List<RouteBase> get $appRoutes => [
+      $root,
+    ];
 
 RouteBase get $root => GoRouteData.$route(
-  path: '/',
-
-  factory: $RootExtension._fromState,
-  routes: [
-    GoRouteData.$route(
-      path: 'branch_one',
-
-      factory: $BranchOneExtension._fromState,
+      path: '/',
+      factory: $RootExtension._fromState,
       routes: [
         GoRouteData.$route(
-          path: 'relative_one',
-
-          factory: $RelativeOneExtension._fromState,
+          path: 'branch_one',
+          factory: $BranchOneExtension._fromState,
           routes: [
             GoRouteData.$route(
-              path: 'relative_two',
-
-              factory: $RelativeTwoExtension._fromState,
+              path: 'relative_one',
+              factory: $RelativeOneExtension._fromState,
+              routes: [
+                GoRouteData.$route(
+                  path: 'relative_two',
+                  factory: $RelativeTwoExtension._fromState,
+                ),
+              ],
+            ),
+          ],
+        ),
+        GoRouteData.$route(
+          path: 'branch_two',
+          factory: $BranchTwoExtension._fromState,
+          routes: [
+            GoRouteData.$route(
+              path: 'relative_one',
+              factory: $RelativeOneExtension._fromState,
+              routes: [
+                GoRouteData.$route(
+                  path: 'relative_two',
+                  factory: $RelativeTwoExtension._fromState,
+                ),
+              ],
             ),
           ],
         ),
       ],
-    ),
-    GoRouteData.$route(
-      path: 'branch_two',
-
-      factory: $BranchTwoExtension._fromState,
-      routes: [
-        GoRouteData.$route(
-          path: 'relative_one',
-
-          factory: $RelativeOneExtension._fromState,
-          routes: [
-            GoRouteData.$route(
-              path: 'relative_two',
-
-              factory: $RelativeTwoExtension._fromState,
-            ),
-          ],
-        ),
-      ],
-    ),
-  ],
-);
+    );
 
 extension $RootExtension on Root {
   static Root _fromState(GoRouterState state) => Root();
 
-  String get location => GoRouteData.$location('/');
+  String get location => GoRouteData.$location(
+        '/',
+      );
 
   void go(BuildContext context) => context.go(location);
 
@@ -72,7 +69,9 @@ extension $RootExtension on Root {
 extension $BranchOneExtension on BranchOne {
   static BranchOne _fromState(GoRouterState state) => BranchOne();
 
-  String get location => GoRouteData.$location('/branch_one');
+  String get location => GoRouteData.$location(
+        '/branch_one',
+      );
 
   void go(BuildContext context) => context.go(location);
 
@@ -87,7 +86,9 @@ extension $BranchOneExtension on BranchOne {
 extension $RelativeOneExtension on RelativeOne {
   static RelativeOne _fromState(GoRouterState state) => RelativeOne();
 
-  String get location => GoRouteData.$location('relative_one');
+  String get location => GoRouteData.$location(
+        'relative_one',
+      );
   String get relativeLocation => './$location';
 
   void goRelative(BuildContext context) => context.go(relativeLocation);
@@ -103,9 +104,16 @@ extension $RelativeOneExtension on RelativeOne {
 }
 
 extension $RelativeTwoExtension on RelativeTwo {
-  static RelativeTwo _fromState(GoRouterState state) => RelativeTwo();
+  static RelativeTwo _fromState(GoRouterState state) => RelativeTwo(
+        param: state.uri.queryParameters['param'],
+      );
 
-  String get location => GoRouteData.$location('relative_two');
+  String get location => GoRouteData.$location(
+        'relative_two',
+        queryParams: {
+          if (param != null) 'param': param,
+        },
+      );
   String get relativeLocation => './$location';
 
   void goRelative(BuildContext context) => context.go(relativeLocation);
@@ -123,7 +131,9 @@ extension $RelativeTwoExtension on RelativeTwo {
 extension $BranchTwoExtension on BranchTwo {
   static BranchTwo _fromState(GoRouterState state) => BranchTwo();
 
-  String get location => GoRouteData.$location('/branch_two');
+  String get location => GoRouteData.$location(
+        '/branch_two',
+      );
 
   void go(BuildContext context) => context.go(location);
 

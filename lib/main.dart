@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:taconic_annotation/taconic_annotation.dart';
 
 part 'main.g.dart';
+
+enum Squad { coreUx, growth, moneyMovement, platform }
 
 void main() {
   final router = GoRouter(routes: $appRoutes, debugLogDiagnostics: true);
@@ -25,6 +28,7 @@ const relativeRoute = TypedRelativeGoRoute<RelativeOne>(
   routes: [TypedRelativeGoRoute<RelativeTwo>(path: 'relative_two')],
 );
 
+@DeepLinkConfig(exportability: ShouldExport(firstAvailableVersion: '1.0.0'), name: 'Root', owner: Squad.coreUx)
 @TypedGoRoute<Root>(
   path: '/',
   routes: [
@@ -50,6 +54,7 @@ class Root extends GoRouteData {
   }
 }
 
+@DeepLinkConfig(exportability: ShouldExport(firstAvailableVersion: '1.0.0'), name: 'BranchOne', owner: Squad.coreUx)
 class BranchOne extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -67,6 +72,7 @@ class BranchOne extends GoRouteData {
   }
 }
 
+@DeepLinkConfig(exportability: ShouldExport(firstAvailableVersion: '1.0.0'), name: 'BranchTwo', owner: Squad.coreUx)
 class BranchTwo extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -84,6 +90,7 @@ class BranchTwo extends GoRouteData {
   }
 }
 
+@DeepLinkConfig(exportability: ShouldExport(firstAvailableVersion: '1.0.0'), name: 'RelativeOne', owner: Squad.coreUx)
 class RelativeOne extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -101,7 +108,12 @@ class RelativeOne extends GoRouteData {
   }
 }
 
+@DeepLinkConfig(exportability: ShouldExport(firstAvailableVersion: '1.0.0'), name: 'RelativeTwo', owner: Squad.coreUx)
 class RelativeTwo extends GoRouteData {
+  final String? param;
+
+  RelativeTwo({this.param});
+
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return Scaffold(
